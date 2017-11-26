@@ -1,7 +1,6 @@
 import React from 'react';
 import Navbar from './Navbar';
 import About from './About';
-import { Route } from 'react-router-dom';
 
 class App extends React.Component {
   render() {
