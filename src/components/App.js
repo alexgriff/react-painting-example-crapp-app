@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Navbar from './Navbar';
 import About from './About';
+import PaintingsContainer from './PaintingsContainer';
 
-class App extends React.Component {
+class App extends Component {
   render() {
     return (
       <div>
@@ -15,6 +16,7 @@ class App extends React.Component {
         <div className="ui container grid">
           <div id="content" className="sixteen wide column">
             <About />
+            {/* <PaintingsContainer /> */}
           </div>
         </div>
       </div>
