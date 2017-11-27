@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const PaintingShow = ({ painting }) => {
   return (
@@ -23,10 +24,10 @@ const PaintingShow = ({ painting }) => {
         </div>
         <div className="extra content">{painting.museum.name}</div>
       </div>
-      <div className="ui primary button">
+      <Link to="/paintings" className="ui primary button">
         <i className="left arrow icon" />
         Back
-      </div>
+      </Link>
     </div>
   );
 };

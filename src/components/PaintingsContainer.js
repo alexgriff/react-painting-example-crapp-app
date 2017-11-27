@@ -1,5 +1,8 @@
 import React from 'react';
+import { Route, Switch } from 'react-router-dom';
 import PaintingsList from './PaintingsList';
+import PaintingsNew from './PaintingsNew';
+import PaintingShow from './PaintingShow';
 
 class PaintingsContainer extends React.Component {
   constructor() {
@@ -46,13 +49,39 @@ class PaintingsContainer extends React.Component {
   }
 
   render() {
+    console.log('render method of Container', this.state);
     return (
       <div>
-        <PaintingsList
-          handleDelete={this.handleDelete}
-          handleVote={this.handleVote}
-          paintings={this.state.paintings}
-        />
+        <Switch>
+          <Route path="/paintings/new" component={PaintingsNew} />
+          <Route
+            path="/paintings/:slug"
+            render={props => {
+              const painting = this.state.paintings.find(
+                pntg => pntg.slug === props.match.params.slug
+              );
+              console.log('painting', painting);
+
+              return painting ? (
+                <PaintingShow painting={painting} />
+              ) : (
+                <h1>Loading...</h1>
+              );
+            }}
+          />
+          <Route
+            path="/paintings"
+            render={() => {
+              return (
+                <PaintingsList
+                  handleDelete={this.handleDelete}
+                  handleVote={this.handleVote}
+                  paintings={this.state.paintings}
+                />
+              );
+            }}
+          />
+        </Switch>
       </div>
     );
   }

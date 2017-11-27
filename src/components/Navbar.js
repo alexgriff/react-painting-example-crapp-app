@@ -1,21 +1,26 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = props => {
   return (
     <div className={`ui top fixed inverted ${props.color} menu`}>
-      <a className="item">
+      <Link to="/" className="item">
         <h2 className="ui header">
           <i className={`${props.icon} icon`} />
           <div className="content">{props.title}</div>
           <div className="sub header">{props.description}</div>
         </h2>
-      </a>
+      </Link>
       <div className="right menu">
-        <a className="item">index</a>
-        <a className="item">new</a>
-        <a className="item">
+        <Link to="/paintings" className="item">
+          index
+        </Link>
+        <Link to="/paintings/new" className="item">
+          new
+        </Link>
+        <Link to="/login" className="item">
           <div className="ui primary button">Sign In</div>
-        </a>
+        </Link>
       </div>
     </div>
   );
