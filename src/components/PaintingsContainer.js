@@ -18,13 +18,20 @@ class PaintingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    if (!localStorage.getItem('token')) {
+    const token = localStorage.getItem('token');
+    if (!token) {
       this.props.history.push('/login');
     } else {
-      api.paintings.getPaintings().then(data => {
-        this.setState({
-          paintings: data.slice(0, 20).sort((a, b) => b.votes - a.votes)
-        });
+      api.auth.getCurrentUser().then(data => {
+        if (data.error) {
+          this.props.history.push('/login');
+        } else {
+          api.paintings.getPaintings().then(data => {
+            this.setState({
+              paintings: data.slice(0, 20).sort((a, b) => b.votes - a.votes)
+            });
+          });
+        }
       });
     }
   }

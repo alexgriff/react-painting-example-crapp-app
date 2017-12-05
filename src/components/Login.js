@@ -1,9 +1,11 @@
 import React from 'react';
+import { api } from '../services/api';
 
 class Login extends React.Component {
   constructor() {
     super();
     this.state = {
+      error: false,
       fields: {
         username: '',
         password: ''
@@ -18,7 +20,14 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log('submitted');
+    api.auth.login(this.state.fields).then(user => {
+      if (user.error) {
+        this.setState({ error: true });
+      } else {
+        this.props.handleLogin(user);
+        this.props.history.push('/');
+      }
+    });
   };
 
   render() {
