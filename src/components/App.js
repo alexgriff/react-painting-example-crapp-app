@@ -7,34 +7,35 @@ import { Route } from 'react-router-dom';
 import { api } from '../services/api';
 
 class App extends React.Component {
-  constructor() {
-    super();
-
+  constructor(props) {
+    super(props);
     this.state = {
       auth: { user: {} }
     };
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-      api.auth.getCurrentUser().then(data => {
-        const currentUser = { user: data };
-        this.setState({ auth: currentUser });
-      });
-    }
+    // const token = localStorage.getItem('token');
+    //
+    // if (token) {
+    api.auth.getCurrentUser().then(user => {
+      if (!user.error) {
+        const updatedState = { ...this.state.auth, user };
+        this.setState({ auth: updatedState });
+      }
+    });
+    // }
   }
 
   handleLogin = user => {
     const currentUser = { user: user };
     this.setState({ auth: currentUser });
-    localStorage.setItem('token', user.id);
+    localStorage.setItem('token', user.jwt);
   };
 
   handleLogout = () => {
-    this.setState({ auth: { user: {} } });
     localStorage.removeItem('token');
+    this.setState({ auth: { user: {} } });
   };
 
   render() {
@@ -51,14 +52,23 @@ class App extends React.Component {
         />
         <div className="ui container grid">
           <div id="content" className="sixteen wide column">
-            <Route exact path="/" component={About} />
+            <Route
+              exact
+              path="/"
+              render={props => <About {...props} loggedIn={!!auth.user.id} />}
+            />
             <Route
               path="/login"
               render={props => {
                 return <Login {...props} handleLogin={this.handleLogin} />;
               }}
             />
-            <Route path="/paintings" component={PaintingsContainer} />
+            <Route
+              path="/paintings"
+              render={props => (
+                <PaintingsContainer {...props} loggedIn={!!auth.user.id} />
+              )}
+            />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import PaintingsList from './PaintingsList';
 import PaintingShow from './PaintingShow';
 import { Route, Switch } from 'react-router-dom';
 import { api } from '../services/api';
+import withAuth from './auth/withAuth';
 
 class PaintingsContainer extends React.Component {
   constructor() {
@@ -18,22 +19,12 @@ class PaintingsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.props.history.push('/login');
-    } else {
-      api.auth.getCurrentUser().then(data => {
-        if (data.error) {
-          this.props.history.push('/login');
-        } else {
-          api.paintings.getPaintings().then(data => {
-            this.setState({
-              paintings: data.slice(0, 20).sort((a, b) => b.votes - a.votes)
-            });
-          });
-        }
+    console.log('componentDidMount in PaintingsContainer');
+    api.paintings.getPaintings().then(data => {
+      this.setState({
+        paintings: data.slice(0, 20).sort((a, b) => b.votes - a.votes)
       });
-    }
+    });
   }
 
   handleDelete(id) {
@@ -93,4 +84,4 @@ class PaintingsContainer extends React.Component {
   }
 }
 
-export default PaintingsContainer;
+export default withAuth(PaintingsContainer);

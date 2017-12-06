@@ -5,12 +5,19 @@ const headers = {
   Accepts: 'application/json'
 };
 
+const get = url => {
+  const token = localStorage.getItem('token');
+  return fetch(url, {
+    headers: { Authorization: token }
+  }).then(res => res.json());
+};
+
 const getPaintings = () => {
-  return fetch(`${API_ROOT}/paintings/`).then(res => res.json());
+  return get(`${API_ROOT}/paintings/`);
 };
 
 const login = data => {
-  return fetch(`${API_ROOT}/auth/`, {
+  return fetch(`${API_ROOT}/login/`, {
     method: 'POST',
     headers,
     body: JSON.stringify(data)
@@ -18,10 +25,7 @@ const login = data => {
 };
 
 const getCurrentUser = () => {
-  const token = localStorage.getItem('token');
-  return fetch(`${API_ROOT}/current_user`, {
-    headers: { Authorization: token }
-  }).then(res => res.json());
+  return get(`${API_ROOT}/current_user`);
 };
 
 export const api = {

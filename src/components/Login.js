@@ -22,6 +22,7 @@ class Login extends React.Component {
     e.preventDefault();
     api.auth.login(this.state.fields).then(user => {
       if (user.error) {
+        console.log(user);
         this.setState({ error: true });
       } else {
         this.props.handleLogin(user);

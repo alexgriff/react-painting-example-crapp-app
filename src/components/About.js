@@ -1,20 +1,7 @@
 import React from 'react';
-import { api } from '../services/api';
+import withAuth from './auth/withAuth';
 
-export default class extends React.Component {
-  componentDidMount() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.props.history.push('/login');
-    } else {
-      api.auth.getCurrentUser().then(data => {
-        if (data.error) {
-          this.props.history.push('/login');
-        }
-      });
-    }
-  }
-
+class About extends React.Component {
   render() {
     return (
       <div>
@@ -65,3 +52,5 @@ export default class extends React.Component {
     );
   }
 }
+
+export default withAuth(About);
